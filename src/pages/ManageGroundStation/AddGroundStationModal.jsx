@@ -15,15 +15,13 @@ const AddGroundStationModal = ({ data, setData, onDelete }) => {
   const groundStationRegister = async () => {
     try {
       const res = await axios.post('/api/groundstation/register', {
-        params: {
-          name: nameValue,
-          city: cityValue,
-          altitudeMeters: altitudeValue,
-          latitudeDegrees: latitudeValue,
-          longitudeDegrees: longitudeValue,
-          providerName: providerValue,
-          status: statusValue
-        }
+        name: nameValue,
+        city: cityValue,
+        altitudeMeters: altitudeValue,
+        latitudeDegrees: latitudeValue,
+        longitudeDegrees: longitudeValue,
+        providerName: providerValue,
+        status: statusValue
       });
       console.log('res', res);
     } catch (error) {
@@ -36,7 +34,7 @@ const AddGroundStationModal = ({ data, setData, onDelete }) => {
       {data && (
         <div className="h-fit w-[560px] rounded-2xl bg-white shadow-primary">
           <div className="flex flex-row items-center justify-between p-4">
-            <Text size="body1" weight="semibold" text={data.name} />
+            <Text size="body1" weight="semibold" text="Ground station registration" />
             <button type="button" className="flex h-8 w-8 items-center justify-center" onClick={() => setData(null)}>
               <XOutlineIcon className="h-4 w-4" />
             </button>
