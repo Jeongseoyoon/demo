@@ -16,12 +16,12 @@ const RegisteredSpaceCraft = () => {
     getSpaceCraft();
   }, []);
 
-  const getSpaceCraft  =async () => {
+  const getSpaceCraft = async () => {
     // 위성 리스트 데이터 호출
     const res = await axios.get('/api/spacecraft/page/1');
     const data = res.data;
-    setSpaceCraftData(data);
-    console.log(data);
+    const spacecraftList = data.spacecraftList;
+    setSpaceCraftData(spacecraftList);
   };
 
   function onClickDetail(data) {
@@ -38,7 +38,7 @@ const RegisteredSpaceCraft = () => {
         <div className="w-full max-w-full flex-1">
           <Grid
             gridColumns={registeredGridColumns}
-            gridData={registeredGridData}
+            gridData={spaceCraftData}
             searchValue={searchValue}
             options={{
               useFilter: false,
@@ -49,7 +49,7 @@ const RegisteredSpaceCraft = () => {
               useCheckbox: true,
               useSort: {
                 use: true,
-                sortKeys: ['name', 'Norad ID','direction', 'titleLine', 'registeredAt']
+                sortKeys: ['name', 'Norad ID', 'direction', 'titleLine', 'registeredAt']
               },
               customCell: {
                 viewDetails: (_, row, index) => (

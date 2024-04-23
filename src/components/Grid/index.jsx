@@ -69,6 +69,10 @@ const Grid = ({ gridColumns, gridData, filterValue, searchValue, checkedRows, se
   }
 
   useEffect(() => {
+    setInnerGridData(gridData);
+  }, [gridData]);
+
+  useEffect(() => {
     setInnerGridData(filterData);
   }, [filterValue]);
 

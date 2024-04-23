@@ -7,15 +7,21 @@ import { useNavigate } from 'react-router-dom';
 import { PlusOutlineIcon } from '../../assets/svgs';
 import { groundStationGridColumns, groundStationGridData } from '../../utils/manageUtils';
 import DeleteSelectedBox from './DeleteSelectedBox';
+import AddGroundStationModal from './AddGroundStationModal';
 
 const ManageGroundStation = () => {
   const [searchValue, setSearchValue] = useState('');
   const [checkedRows, setCheckedRows] = useState([]);
+  const [modalData, setModalData] = useState(null);
   const navigate = useNavigate();
   const tabIndex = manageTabs.findIndex((tab) => tab.path === '/manage-ground-station');
 
   function onClickTab(index) {
     navigate(manageTabs[index].path);
+  }
+
+  function onClickAdd() {
+    setModalData([]);
   }
 
   return (
@@ -31,7 +37,12 @@ const ManageGroundStation = () => {
         <div className="flex flex-row gap-2">
           <Button text="Delete" type="secondary" />
           <Button text="Edit" type="secondary" />
-          <Button text="Add" icon={<PlusOutlineIcon className="[&_path]:stroke-white" />} type="primary" />
+          <Button
+            text="Add"
+            icon={<PlusOutlineIcon className="[&_path]:stroke-white" />}
+            type="primary"
+            onClick={() => onClickAdd()}
+          />
         </div>
       </div>
       <div className="w-full max-w-full flex-1">
@@ -58,6 +69,7 @@ const ManageGroundStation = () => {
       <div className="flex w-full items-center justify-center py-3">
         <DeleteSelectedBox checkedData={checkedRows} />
       </div>
+      <AddGroundStationModal data={modalData} setData={setModalData} />
     </div>
   );
 };

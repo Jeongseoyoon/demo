@@ -5,7 +5,7 @@ const Modal = ({ children, isOpened }) => {
   return createPortal(
     <>
       {isOpened && (
-        <div className="fixed left-0 top-0 flex h-screen w-screen items-center justify-center bg-black/10 p-4">
+        <div className="fixed left-0 top-0 z-[999] flex h-screen w-screen items-center justify-center bg-black/10 p-4">
           {children}
         </div>
       )}

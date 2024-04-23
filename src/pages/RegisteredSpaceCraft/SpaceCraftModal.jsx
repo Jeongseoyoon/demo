@@ -1,6 +1,8 @@
+import axios from 'axios';
 import { XOutlineIcon } from '../../assets/svgs';
 import { Button, Modal, Text } from '../../components';
 import { registeredModalList } from '../../utils';
+import { useEffect } from 'react';
 
 const SpaceCraftModalListElement = ({ title, value }) => {
   return (
@@ -12,10 +14,23 @@ const SpaceCraftModalListElement = ({ title, value }) => {
 };
 
 const SpaceCraftModal = ({ data, setData, onDelete, onEdit }) => {
+  useEffect(() => {
+    if (data) {
+      getDetailSpaceCraft();
+    }
+  }, [data]);
+
+  const getDetailSpaceCraft = async () => {
+    console.log(data);
+    const res = await axios.get(`/api/spacecraft/${data.id}`);
+    const spaceCraftData = res.data;
+    console.log('dd', spaceCraftData);
+  };
+
   return (
     <Modal isOpened={!!data}>
       {data && (
-        <div className="shadow-primary h-fit w-[560px] rounded-2xl bg-white">
+        <div className="h-fit w-[560px] rounded-2xl bg-white shadow-primary">
           <div className="flex flex-row items-center justify-between p-4">
             <Text size="body1" weight="semibold" text={data.name} />
             <button type="button" className="flex h-8 w-8 items-center justify-center" onClick={() => setData(null)}>
@@ -27,7 +42,7 @@ const SpaceCraftModal = ({ data, setData, onDelete, onEdit }) => {
               <SpaceCraftModalListElement key={key} title={title} value={data[key] ?? 'TEST'} />
             ))}
           </ul>
-          <div className="bg-bg-transparent_gray_light flex w-full flex-row items-center justify-between p-4">
+          <div className="flex w-full flex-row items-center justify-between bg-bg-transparent_gray_light p-4">
             <Button text="Delete" onClick={onDelete} type="secondary" size="large" />
             <Button text="Edit" onClick={onEdit} type="primary" size="large" />
           </div>

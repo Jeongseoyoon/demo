@@ -86,18 +86,16 @@ export const contactGridData = Array.from({ length: Math.round(Math.random() * 2
 export const registeredGridColumns = [
   { title: 'Name', key: 'name', width: 120 },
   { title: 'Norad ID', key: 'noradId', width: 160 },
-  { title: 'Direction', key: 'direction', width: 120 },
-  { title: 'TLE - Title Line', key: 'titleLine', width: 160 },
-  { title: 'Registered At', key: 'registeredAt', width: 250 },
+  { title: 'TLE - Title Line', key: 'tleTitle', width: 160 },
+  { title: 'Registered At', key: 'createdDate', width: 250 },
   { title: '', key: 'viewDetails' }
 ];
 
 export const registeredGridData = Array.from({ length: Math.round(Math.random() * 20) }, () => ({
   name: 'AQUA',
-  direction: ['Downlink', 'Test 1', 'Test 5'][Math.round(Math.random() * 2)] || 'Downlink',
   noradId: '25452',
-  titleLine: 'AQUA',
-  registeredAt: `2024/04/${Math.round(Math.random() * 10 + 10)} ${Math.round(Math.random() * 24)
+  tleTitle: 'AQUA',
+  createdDate: `2024/04/${Math.round(Math.random() * 10 + 10)} ${Math.round(Math.random() * 24)
     .toString()
     .padStart(2, '0')}:00:00`
 }));
@@ -110,4 +108,14 @@ export const registeredModalList = [
   { title: 'TLE - Line 2', key: 'line2' },
   { title: 'Direction', key: 'direction' },
   { title: 'Center frequency (MHz)', key: 'frequency' }
+];
+
+export const addGroundStationModalList = [
+  { title: 'name', key: 'subscription' },
+  { title: 'city', key: 'id' },
+  { title: 'latitude', key: 'titleLine' },
+  { title: 'longitude', key: 'line1' },
+  { title: 'altitude', key: 'line2' },
+  { title: 'Dprovider', key: 'direction' },
+  { title: 'status', key: 'frequency' }
 ];
