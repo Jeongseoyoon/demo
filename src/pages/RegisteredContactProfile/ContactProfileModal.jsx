@@ -31,7 +31,7 @@ const ContactProfileModal = ({ data, setData, onDelete, onEdit }) => {
       titleLine: spaceCraftData.spacecraftDto.tleTitle,
       registeredAt: spaceCraftData.createdDate,
       tleFirst: spaceCraftData.spacecraftDto.tleFirst,
-      tleSecond: spaceCraftData.spacecraftDto.tleSecond,
+      tleSecond: spaceCraftData.spacecraftDto.tleSecond
     };
     setModifiedData(modifiedData);
     console.log('dd', modifiedData);
@@ -47,7 +47,7 @@ const ContactProfileModal = ({ data, setData, onDelete, onEdit }) => {
               <XOutlineIcon className="h-4 w-4" />
             </button>
           </div>
-          <ul className="flex max-h-[60vh] flex-col gap-4 px-4 pb-4">
+          <ul className="flex max-h-[60vh] flex-col gap-4 overflow-auto overflow-auto px-4 pb-4">
             {registeredModalList.map(({ title, key }) => (
               <SpaceCraftModalListElement key={key} title={title} value={data[key] ?? 'TEST'} />
             ))}

@@ -20,23 +20,34 @@ const RegisteredSpaceCraft = () => {
     // 위성 리스트 데이터 호출
     const res = await axios.get('/api/link/page/1');
     const data = res.data;
-    console.log('data',data);
-    const spacecraftList = data.linkList.map(item => {
+    console.log('data', data);
+    const spacecraftList = data.linkList.map((item) => {
       return {
         ...item,
         name: item.spacecraftDto ? item.spacecraftDto.name : null,
         noradId: item.spacecraftDto ? item.spacecraftDto.noradId : null,
         titleLine: item.spacecraftDto ? item.spacecraftDto.tleTitle : null,
         registeredAt: item.spacecraftDto ? item.spacecraftDto.createdDate : null,
-        direction: item.spacecraftDto ? item.linkDirection: null,
+        direction: item.spacecraftDto ? item.linkDirection : null
       };
     });
-    console.log('data.linkList',data.linkList);
+    console.log('data.linkList', data.linkList);
     setSpaceCraftData(spacecraftList);
   };
 
   function onClickDetail(data) {
-    setModalData(data);
+    const temp = {
+      name: data.name,
+      noradId: data.noradId,
+      titleLine: data.spacecraftDto.tleTitle,
+      tleFirst: data.spacecraftDto.tleFirst,
+      tleSecond: data.spacecraftDto.tleSecond,
+      direction: data.linkDirection,
+      frequency: data.centerFrequency,
+      bandwidth: data.bandwidth,
+      polarization: data.polarization
+    };
+    setModalData(temp);
   }
 
   return (
