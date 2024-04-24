@@ -3,9 +3,9 @@ import axios from 'axios';
 import { Button, DescriptionBar, Grid, SearchBar } from '../../components';
 import { registeredGridColumns } from '../../utils/gridUtils';
 
-import SpaceCraftModal from './SpaceCraftModal';
+import ContactProfileModal from './ContactProfileModal';
 
-const RegisteredSpaceCraft = () => {
+const RegisteredContactProfile = () => {
   const [searchValue, setSearchValue] = useState('');
   const [checkedRows, setCheckedRows] = useState([]);
   const [modalData, setModalData] = useState(null);
@@ -42,7 +42,7 @@ const RegisteredSpaceCraft = () => {
   return (
     <>
       <div className="flex h-full w-full flex-col">
-        <DescriptionBar title="Registered Spacecraft" description="Check and access to the registered spacecraft" />
+        <DescriptionBar title="Registered Contact Profile" description="Check and access to the registered Contact Profile" />
         <div className="p-4">
           <SearchBar className="w-60" value={searchValue} setValue={setSearchValue} placeholder="Search" />
         </div>
@@ -73,9 +73,9 @@ const RegisteredSpaceCraft = () => {
           />
         </div>
       </div>
-      <SpaceCraftModal data={modalData} setData={setModalData} />
+      <ContactProfileModal data={modalData} setData={setModalData} />
     </>
   );
 };
 
-export default RegisteredSpaceCraft;
+export default RegisteredContactProfile;

@@ -13,7 +13,7 @@ const SpaceCraftModalListElement = ({ title, value }) => {
   );
 };
 
-const SpaceCraftModal = ({ data, setData, onDelete, onEdit }) => {
+const ContactProfileModal = ({ data, setData, onDelete, onEdit }) => {
   const [modifiedData, setModifiedData] = useState(null);
 
   useEffect(() => {
@@ -62,4 +62,4 @@ const SpaceCraftModal = ({ data, setData, onDelete, onEdit }) => {
   );
 };
 
-export default SpaceCraftModal;
+export default ContactProfileModal;

@@ -8,6 +8,7 @@ import ManageContacts from './pages/ManageContacts';
 import RegisteredSpaceCraft from './pages/RegisteredSpaceCraft';
 import ManageGroundStation from './pages/ManageGroundStation';
 import ContactProfile from './pages/ContactProfile';
+import RegisteredContactProfile from './pages/RegisteredContactProfile';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/schedule-contact" element={<ScheduleContact />} />
           <Route path="/manage-contacts" element={<ManageContacts />} />
           <Route path="/registered-spacecraft" element={<RegisteredSpaceCraft />} />
+          <Route path="/registered-contact-profile" element={<RegisteredContactProfile/>} />
           <Route path="/manage-ground-station" element={<ManageGroundStation />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

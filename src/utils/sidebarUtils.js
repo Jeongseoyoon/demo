@@ -58,7 +58,8 @@ export const sideBarMenuList = [
       { title: 'Contact Profile', path: '/contact-profile', icon: <ClipboardOutlineIcon /> },
       { title: 'Schedule a Contact', path: '/schedule-contact', icon: <CalendarOutlineIcon /> },
       { title: 'Manage Contacts', path: '/manage-contacts', icon: <ChartBarOutlineIcon /> },
-      { title: 'Registered SpaceCraft', path: '/registered-spacecraft', icon: <SatelliteIcon /> }
+      { title: 'Registered SpaceCraft', path: '/registered-spacecraft', icon: <SatelliteIcon /> },
+      { title: 'Registered Contact Profile', path: '/registered-contact-profile', icon: <GlobeAltOutlineIcon /> }
     ]
   },
   {

@@ -84,10 +84,11 @@ export const contactGridData = Array.from({ length: Math.round(Math.random() * 2
 }));
 
 export const registeredGridColumns = [
-  { title: 'Name', key: 'name', width: 120 },
+  { title: 'Name', key: 'name', width: 180 },
   { title: 'Norad ID', key: 'noradId', width: 160 },
-  { title: 'TLE - Title Line', key: 'tleTitle', width: 160 },
-  { title: 'Registered At', key: 'createdDate', width: 250 },
+  { title: 'Direction', key: 'direction', width: 120 },
+  { title: 'TLE - Title Line', key: 'titleLine', width: 160 },
+  { title: 'Registered At', key: 'registeredAt', width: 250 },
   { title: '', key: 'viewDetails' }
 ];
 
@@ -101,13 +102,14 @@ export const registeredGridData = Array.from({ length: Math.round(Math.random() 
 }));
 
 export const registeredModalList = [
-  { title: 'Subscription', key: 'subscription' },
-  { title: 'NORAD ID', key: 'id' },
+  { title: 'NORAD ID', key: 'noradId' },
   { title: 'TLE - Title Line', key: 'titleLine' },
-  { title: 'TLE - Line 1', key: 'line1' },
-  { title: 'TLE - Line 2', key: 'line2' },
+  { title: 'TLE - Line 1', key: 'tleFirst' },
+  { title: 'TLE - Line 2', key: 'tleSecond' },
   { title: 'Direction', key: 'direction' },
-  { title: 'Center frequency (MHz)', key: 'frequency' }
+  { title: 'Center frequency (MHz)', key: 'frequency' },
+  { title: 'Bandwidth (MHz)', key: 'bandwidth' },
+  { title: 'Polarization', key: 'polarization' }
 ];
 
 export const addGroundStationModalList = [
