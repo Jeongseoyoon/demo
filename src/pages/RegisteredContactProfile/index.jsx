@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, DescriptionBar, Grid, SearchBar } from '../../components';
-import { registeredGridColumns } from '../../utils/gridUtils';
+import { contactProfileGridColumns } from '../../utils/gridUtils';
 
 import ContactProfileModal from './ContactProfileModal';
 
@@ -9,34 +9,52 @@ const RegisteredContactProfile = () => {
   const [searchValue, setSearchValue] = useState('');
   const [checkedRows, setCheckedRows] = useState([]);
   const [modalData, setModalData] = useState(null);
-  const [spaceCraftData, setSpaceCraftData] = useState([]);
+  const [contactProfileCraftData, setContactProfileData] = useState([]);
 
   useEffect(() => {
     // 페이지 진입 시 콤보박스 데이터(위성 리스트) 생성
-    getSpaceCraft();
+    getContactProfile();
   }, []);
 
-  const getSpaceCraft = async () => {
-    // 위성 리스트 데이터 호출
-    const res = await axios.get('/api/link/page/1');
+  const getContactProfile = async () => {
+    // 교신프로필 데이터 호출
+    const res = await axios.get('/api/contactprofile/page/1');
     const data = res.data;
     console.log('data',data);
-    const spacecraftList = data.linkList.map(item => {
+    const contactProfileList = data.contactProfileList.map(item => {
       return {
         ...item,
-        name: item.spacecraftDto ? item.spacecraftDto.name : null,
-        noradId: item.spacecraftDto ? item.spacecraftDto.noradId : null,
-        titleLine: item.spacecraftDto ? item.spacecraftDto.tleTitle : null,
-        registeredAt: item.spacecraftDto ? item.spacecraftDto.createdDate : null,
-        direction: item.spacecraftDto ? item.linkDirection: null,
+        name: item.groundStationDto ? item.groundStationDto.name : null,
+        city: item.groundStationDto ? item.groundStationDto.city : null,
+        latitudeDegrees: item.groundStationDto ? item.groundStationDto.latitudeDegrees: null,
+        longitudeDegrees: item.groundStationDto ? item.groundStationDto.longitudeDegrees : null,
+        minContactDuration: item.groundStationDto ? item.minContactDuration : null,
+        minElevationDegrees: item.groundStationDto ? item.minElevationDegrees : null,
+        registeredAt: item.groundStationDto ? item.createdDate : null,
       };
     });
-    console.log('data.linkList',data.linkList);
-    setSpaceCraftData(spacecraftList);
+    console.log('data.data.contactProfileList',data.contactProfileList);
+    setContactProfileData(contactProfileList);
   };
-
-  function onClickDetail(data) {
-    setModalData(data);
+  async function onClickDetail(data) {
+    const res = await axios.get(`/api/contactprofile/${data.id}`);
+    const resData = res.data
+    const autoTrackingFrequencyBandKeys = Object.keys(resData.autoTrackingFrequencyBand);
+    const autoTrackingFrequencyBandId = autoTrackingFrequencyBandKeys.map(key => parseInt(key)); 
+    console.log('werwere',res);
+    const location = data.latitudeDegrees + ',' + data.longitudeDegrees;
+    const temp = {
+      name: data.name,
+      id:data.id,
+      city:data.groundStationDto.city,
+      minContactDuration: data.minContactDuration,
+      minElevationDegrees: data.minElevationDegrees,
+      autoTrackingFrequencyBand: data.autoTrackingFrequencyBand,
+      autoTrackingFrequencyBandId: autoTrackingFrequencyBandId,
+      createdDate: data.groundStationDto.createdDate,
+      location:location
+    };
+    setModalData(temp);
   }
 
   return (
@@ -48,8 +66,8 @@ const RegisteredContactProfile = () => {
         </div>
         <div className="w-full max-w-full flex-1">
           <Grid
-            gridColumns={registeredGridColumns}
-            gridData={spaceCraftData}
+            gridColumns={contactProfileGridColumns}
+            gridData={contactProfileCraftData}
             searchValue={searchValue}
             options={{
               useFilter: false,

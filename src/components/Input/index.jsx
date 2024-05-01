@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 
-const Input = ({ className, type = 'text', label, value, setValue, onKeyDown }) => {
+const Input = ({ className, type = 'text', label, value, setValue, onKeyDown,placeholder }) => {
   function onChangeInput(e) {
     setValue(e.target.value);
   }
@@ -25,6 +25,7 @@ const Input = ({ className, type = 'text', label, value, setValue, onKeyDown }) 
         value={value}
         onChange={onChangeInput}
         onKeyDown={handleKeyDown}
+        placeholder={placeholder}
       />
     </div>
   );

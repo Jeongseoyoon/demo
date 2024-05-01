@@ -5,6 +5,7 @@ import BasicInformation from './BasicInformation';
 import ReviewArea from './ReviewArea';
 import { DescriptionBar, InfoMessage, MenuTab } from '../../components';
 import { InformationCircleOutlineIcon } from '../../assets/svgs';
+import Alert from '../../components/Alert';
 
 const MENU_INDEX = {
   BASIC_INFO: 0,
@@ -17,6 +18,8 @@ const ContactProfile = () => {
   const [messageArray, setMessageArray] = useState([]);
   const [basicInformationData, setBasicInformationData] = useState(null);
   const [messageArrayCount, setMessageArrayCount] = useState(0);
+  const [isOpened, setIsOpened] = useState(false);
+  const [alertMessage, setAlertMessage] = useState(null);
 
   function onClickTab(index) {
     setSelectedMenuIndex(index);
@@ -33,6 +36,40 @@ const ContactProfile = () => {
   // 다음, 생성 버튼
   const onClickNextButton = async () => {
     if (selectedMenuIndex !== MENU_INDEX.REVIEW) {
+      if(selectedMenuIndex === MENU_INDEX.BASIC_INFO){
+        // 교신 프로필 정보 유효성검사
+        let validFlag = true;
+        if(basicInformationData){
+          console.log(basicInformationData);
+          const keyNameObj = {
+            groundStationName: 'Ground Station',
+            noradId: 'Location',
+            name: 'Name',
+            minContactDuration: 'Minimum viable Contact duration',
+            minElevationDegrees: 'Minimum elevation in degrees',
+            autoTrackingFrequencyBand: 'Auto Tracking Frequency Band',
+          };
+          let keyName ='';
+          for (const key in basicInformationData) {
+            if (!basicInformationData[key]) {
+              if (keyNameObj[key]) {
+                keyName += `${keyNameObj[key]},`;
+                validFlag = false;
+              }
+            }
+          }
+          if (!validFlag) {
+            const lastChar = keyName.charAt(keyName.length - 1);
+            if (lastChar === ',') {
+              keyName = keyName.substring(0, keyName.length - 1);
+            }
+            const message = `Please enter [ ${keyName} ]`;
+            setAlertMessage(message);
+            setIsOpened(true);
+            return;
+          }
+        }
+      }
       setSelectedMenuIndex((prev) => prev + 1);
       return;
     }
@@ -59,28 +96,30 @@ const ContactProfile = () => {
     }
   };
 
+  const onClickClose = () => {
+    setIsOpened(false);
+  };
+
   // BasicInformation 컴포넌트 값
   const handleBasicInformationChange = (data) => {
     setBasicInformationData(data);
-    console.log('dddd', data);
   };
 
   return (
     <>
       <div className="flex h-full w-full flex-col">
         <DescriptionBar
-          title="Register a Spacecraft"
-          description="  Once the satellite is on-boarded, you can use the IOPS Ground Station to identify which satellite you need to
-        communicate and schedule connections to the satellite."
+          title="Contact Profile"
+          description="Save the contact profile and configure it using the IOPS Ground Station."
         />
         <MenuTab menuList={buttonMenuList} selectedMenuIndex={selectedMenuIndex} onClickTab={onClickTab} />
-        <div className="w-full max-w-[640px] flex-1 px-6 py-6">
+        <div className="w-full max-w-[660px] flex-1 px-6 py-6">
           {selectedMenuIndex === MENU_INDEX.BASIC_INFO && (
             <BasicInformation onBasicInformationChange={handleBasicInformationChange} />
           )}
           {selectedMenuIndex === MENU_INDEX.REVIEW && <ReviewArea basicInformationData={basicInformationData} />}
         </div>
-        <div className="flex w-full max-w-[640px] flex-row gap-2 px-6 py-6">
+        <div className="flex w-full max-w-[660px] flex-row gap-2 px-6 py-6">
           <LargeButton className="h-10 flex-1" type="secondary" text="Previous" onClick={onClickPreviousButton} />
           <LargeButton
             className="h-10 flex-1"
@@ -90,6 +129,8 @@ const ContactProfile = () => {
           />
         </div>
       </div>
+       {/* alert */}
+       <Alert isOpened={isOpened} onClickClose={onClickClose} message={alertMessage} />
       <InfoMessage messageArray={messageArray} onClickDelete={onClickDeleteButton} />
     </>
   );

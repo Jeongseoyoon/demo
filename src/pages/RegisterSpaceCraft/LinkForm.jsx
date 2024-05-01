@@ -17,7 +17,7 @@ const LinkForm = ({ onSaveLinkInfo }) => {
   const [directionId, setDirectionId] = useState('');
   const [centerFreqValue, setCenterFreqValue] = useState('');
   const [bandwidthValue, setBandwidthValue] = useState('');
-  const [polarizeValue, setPolarizeValue] = useState([]);
+  const [polarizeValue, setPolarizeValue] = useState('');
   const [polarizeId, setPolarizeId] = useState('');
 
   useEffect(() => {
@@ -25,16 +25,19 @@ const LinkForm = ({ onSaveLinkInfo }) => {
     onSaveLinkInfo({
       name: linkNameValue,
       linkDirection: directionId,
+      directionValue: directionValue,
       centerFrequency: centerFreqValue,
       bandwidth: bandwidthValue,
       polarization: polarizeId,
-      directionValue:directionValue,
       polarizeValue: polarizeValue
     });
   }, [linkNameValue, directionId, centerFreqValue, bandwidthValue, polarizeId, directionValue, polarizeValue]);
 
-  const onClickListValueCallback = (e, item) => {
+  const onClickDirectionCallback = (e, item) => {
     setDirectionId(item.id);
+  };
+
+  const onClickPolarizationCallback = (e, item) => {
     setPolarizeId(item.id);
   };
 
@@ -46,7 +49,7 @@ const LinkForm = ({ onSaveLinkInfo }) => {
         list={DUMMY_DIRECTION_LIST}
         value={directionValue}
         setValue={setDirectionValue}
-        onClickListValueCallback={onClickListValueCallback}
+        onClickListValueCallback={onClickDirectionCallback}
         name="linkDirection"
       />
       <Input
@@ -54,13 +57,15 @@ const LinkForm = ({ onSaveLinkInfo }) => {
         value={centerFreqValue}
         setValue={setCenterFreqValue}
         name="centerFrequency"
+        placeholder={"Rx (2200~2300), Tx (2025~2120)"}
       />
-      <Input label="Bandwidth (MHz)" value={bandwidthValue} setValue={setBandwidthValue} name="bandwidth" />
+      <Input label="Bandwidth (MHz)" value={bandwidthValue} setValue={setBandwidthValue} name="bandwidth"/>
       <SelectBox
         label="Polarization"
         list={DUMMY_POLARIZE_LIST}
         value={polarizeValue}
         setValue={setPolarizeValue}
+        onClickListValueCallback={onClickPolarizationCallback}
         name="polarization"
       />
     </form>

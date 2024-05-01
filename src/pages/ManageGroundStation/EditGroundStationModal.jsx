@@ -1,9 +1,15 @@
 import axios from 'axios';
 import { XOutlineIcon } from '../../assets/svgs';
-import { Button, Input, Modal, Text } from '../../components';
-import { useState } from 'react';
+import { Button, Input, Modal, SelectBox, Text } from '../../components';
+import { useEffect, useState } from 'react';
 
-const AddGroundStationModal = ({ data, setData, onDelete }) => {
+const STATUS_LIST = [
+  { id: 1, text: 'Developing' },
+  { id: 2, text: 'Operating' },
+  { id: 3, text: 'Maintenance' }
+];
+
+const EditGroundStationModal = ({ data, setData }) => {
   const [nameValue, setNameValue] = useState('');
   const [cityValue, setCityValue] = useState('');
   const [latitudeValue, setLatitudeValue] = useState('');
@@ -11,18 +17,36 @@ const AddGroundStationModal = ({ data, setData, onDelete }) => {
   const [altitudeValue, setAltitudeValue] = useState('');
   const [providerValue, setProviderValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
+  const [statusValueId, setStatusValueId] = useState('');
 
-  const groundStationRegister = async () => {
+  useEffect(() => {
+    if(data){
+      setNameValue(data.name);
+      setCityValue(data.city);
+      setLatitudeValue(data.latitudeDegrees);
+      setLongitudeValue(data.longitudeDegrees);
+      setAltitudeValue(data.altitudeMeters);
+      setProviderValue(data.providerName);
+      setStatusValue(data.status);
+    };
+  }, [data]);
+
+  const onClickListValueCallback = (e, item) => {
+    setStatusValueId(item.id);
+  };
+
+  const onSave = async (e) => {
     try {
-      const res = await axios.post('/api/groundstation/register', {
+      const updatedData = {
         name: nameValue,
         city: cityValue,
         altitudeMeters: altitudeValue,
         latitudeDegrees: latitudeValue,
         longitudeDegrees: longitudeValue,
         providerName: providerValue,
-        status: statusValue
-      });
+        status: statusValueId
+      };
+      const res = await axios.patch(`/api/groundstation/${data.id}`,updatedData);
       console.log('res', res);
       window.location.href = '/manage-ground-station';
     } catch (error) {
@@ -35,7 +59,7 @@ const AddGroundStationModal = ({ data, setData, onDelete }) => {
       {data && (
         <div className="h-fit w-[560px] rounded-2xl bg-white shadow-primary">
           <div className="flex flex-row items-center justify-between p-4">
-            <Text size="body1" weight="semibold" text="Ground station registration" />
+            <Text size="body1" weight="semibold" text={data.name}/>
             <button type="button" className="flex h-8 w-8 items-center justify-center" onClick={() => setData(null)}>
               <XOutlineIcon className="h-4 w-4" />
             </button>
@@ -60,12 +84,18 @@ const AddGroundStationModal = ({ data, setData, onDelete }) => {
               <Input label="Provider" value={providerValue} setValue={setProviderValue} />
             </li>
             <li className="border-primary flex flex-col gap-2 rounded-lg border px-3 py-2">
-              <Input label="Status" value={statusValue} setValue={setStatusValue} />
+            <SelectBox
+                label="Status"
+                list={STATUS_LIST}
+                value={statusValue}
+                setValue={setStatusValue}
+                name="autoTrackingFrequencyBand"
+                onClickListValueCallback={onClickListValueCallback}
+              />
             </li>
           </ul>
           <div className="flex w-full flex-row items-center justify-end bg-bg-transparent_gray_light p-4">
-            {/* <Button text="Delete" onClick={onDelete} type="secondary" size="large" /> */}
-            <Button text="Save" onClick={groundStationRegister} type="primary" size="large" />
+            <Button text="Save" onClick={(e) => onSave(e)} type="primary" size="large" />
           </div>
         </div>
       )}
@@ -73,4 +103,4 @@ const AddGroundStationModal = ({ data, setData, onDelete }) => {
   );
 };
 
-export default AddGroundStationModal;
+export default EditGroundStationModal;

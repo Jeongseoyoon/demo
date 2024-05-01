@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Text, Button } from '../../components';
 import { CreditCardOutlineIcon } from '../../assets/svgs';
+import axios from 'axios';
 
 const PlanChip = ({ plan }) => {
   const planColor =
@@ -37,12 +38,20 @@ const CheckoutRow = ({ children, label }) => {
 const ContactCheckout = ({ plan, checkedData, discount }) => {
   const [price, setPrice] = useState(0);
 
+  // 20240424 CheckoutButton 기능 추가 - 유인식
+  const onCheckoutButtonClick = () => {
+    const checkedList = checkedData.map((item) => {
+      return item.id;
+    });
+    axios.patch(`http://172.30.1.66:8080/schedule/reservation`, checkedList).then(alert('CHECK OUT FINISHED'));
+  };
+
   useEffect(() => {
     setPrice(checkedData?.reduce((acc, cur) => acc + cur.price, 0));
   }, [checkedData]);
 
   return (
-    <div className="shadow-primary w-[400px] rounded-2xl bg-bg-inner p-3">
+    <div className="w-[400px] rounded-2xl bg-bg-inner p-3 shadow-primary">
       <ul className="flex w-full flex-col gap-2 p-3">
         <CheckoutRow label="Plan">
           <PlanChip plan={plan} />
@@ -64,7 +73,12 @@ const ContactCheckout = ({ plan, checkedData, discount }) => {
           <Text text={`$${price + discount}`} weight="semibold" size="medium" />
         </div>
         <div className="h-4 w-[1px] bg-border-primary" />
-        <Button icon={<CreditCardOutlineIcon className="[&_path]:stroke-white" />} text="Checkout" type="primary" />
+        <Button
+          icon={<CreditCardOutlineIcon className="[&_path]:stroke-white" />}
+          text="Checkout"
+          type="primary"
+          onClick={() => onCheckoutButtonClick()}
+        />
       </div>
     </div>
   );

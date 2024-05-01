@@ -42,10 +42,10 @@ const BasicInformation = ({ onBasicInformationChange }) => {
   return (
     <form className="flex w-full flex-col gap-6">
       <Input label="Name" value={nameValue} setValue={setNameValue} />
-      <Input label="NORAD ID" value={noradValue} setValue={setNoradValue} onKeyDown={handleKeyDown} />
-      <Input label="TLE - Title" value={tleTitleValue} setValue={setTleTitleValue} />
-      <Input label="TLE - Line 1" value={tleLine1Value} setValue={setTleLine1Value} />
-      <Input label="TLE - Line 2" value={tleLine2Value} setValue={setTleLine2Value} />
+      <Input label="NORAD ID (North American Aerospace Defense Catalog Number. e.g. 27424)" value={noradValue} setValue={setNoradValue} onKeyDown={handleKeyDown} placeholder="After entering the NORAD ID, press Enter and it will be entered automatically."/>
+      <Input label="TLE - Title (Two-line element set (TLE) title line)" value={tleTitleValue} setValue={setTleTitleValue} />
+      <Input label="TLE - Line 1 (Two-line element set (TLE) line 1)" value={tleLine1Value} setValue={setTleLine1Value} />
+      <Input label="TLE - Line 2 (Two-line element set (TLE) line 2)" value={tleLine2Value} setValue={setTleLine2Value} />
     </form>
   );
 };

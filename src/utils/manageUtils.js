@@ -3,13 +3,14 @@ import { sideBarMenuList } from './sidebarUtils';
 export const manageTabs = sideBarMenuList.find((menu) => menu.subMenuTitle === 'Admin')?.children ?? [];
 
 export const groundStationGridColumns = [
-  { title: 'Name', key: 'name', width: 120 },
+  { title: 'Name', key: 'name', width: 220 },
   { title: 'City', key: 'city', width: 120 },
-  { title: 'Latitude', key: 'latitude', width: 120 },
-  { title: 'Longitude', key: 'longitude', width: 120 },
-  { title: 'Altitude', key: 'altitude', width: 120 },
-  { title: 'Provider', key: 'provider', width: 120 },
-  { title: 'Status', key: 'status', width: 120 }
+  { title: 'Latitude', key: 'latitudeDegrees', width: 120 },
+  { title: 'Longitude', key: 'longitudeDegrees', width: 120 },
+  { title: 'Altitude', key: 'altitudeMeters', width: 120 },
+  { title: 'Provider', key: 'providerName', width: 120 },
+  { title: 'Status', key: 'status', width: 120 },
+  { title: '', key: 'viewDetails' }
 ];
 
 export const groundStationGridData = Array.from({ length: Math.round(Math.random() * 20) }, () => ({

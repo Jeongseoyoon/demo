@@ -28,14 +28,24 @@ const RegisteredSpaceCraft = () => {
         noradId: item.spacecraftDto ? item.spacecraftDto.noradId : null,
         titleLine: item.spacecraftDto ? item.spacecraftDto.tleTitle : null,
         registeredAt: item.spacecraftDto ? item.spacecraftDto.createdDate : null,
-        direction: item.spacecraftDto ? item.linkDirection : null
+        direction: item.spacecraftDto ? item.linkDirection : null,
       };
     });
     console.log('data.linkList', data.linkList);
     setSpaceCraftData(spacecraftList);
   };
 
-  function onClickDetail(data) {
+  async function onClickDetail (data) {
+    const res = await axios.get(`/api/link/${data.id}`);
+    const resData = res.data
+    console.log('rere',resData);
+    const directionKeys = Object.keys(resData.linkDirection);
+    const directionId = directionKeys.map(key => parseInt(key)); 
+    const polarizationKeys = Object.keys(resData.polarization);
+    const polarizationId = polarizationKeys.map(key => parseInt(key)); 
+    const polarizationValueKeys = Object.keys(resData.polarization);
+    const polarizationValue = polarizationValueKeys.map(key => resData.polarization[key]);
+    console.log('directionId',polarizationValue);
     const temp = {
       name: data.name,
       noradId: data.noradId,
@@ -45,8 +55,13 @@ const RegisteredSpaceCraft = () => {
       direction: data.linkDirection,
       frequency: data.centerFrequency,
       bandwidth: data.bandwidth,
-      polarization: data.polarization
+      directionId: directionId,
+      polarizationId: polarizationId,
+      polarization: polarizationValue,
+      id:data.id,
+      isFirst:true,
     };
+    console.log('temp',temp);
     setModalData(temp);
   }
 

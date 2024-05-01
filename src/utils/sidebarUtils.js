@@ -26,7 +26,7 @@ import {
 
 export const sideBarMenuList = [
   {
-    title: 'About IGS',
+    title: 'About I-MCSS',
     path: '/about',
     icon: <HomeOutlineIcon />
   },
@@ -59,7 +59,16 @@ export const sideBarMenuList = [
       { title: 'Schedule a Contact', path: '/schedule-contact', icon: <CalendarOutlineIcon /> },
       { title: 'Manage Contacts', path: '/manage-contacts', icon: <ChartBarOutlineIcon /> },
       { title: 'Registered SpaceCraft', path: '/registered-spacecraft', icon: <SatelliteIcon /> },
-      { title: 'Registered Contact Profile', path: '/registered-contact-profile', icon: <GlobeAltOutlineIcon /> }
+      { title: 'Registered Contact Profile', path: '/registered-contact-profile', icon: <GlobeAltOutlineIcon /> },
+    ]
+  },
+  {
+    subMenuTitle: 'Mission Control',
+    children: [
+      { title: 'Commanding', path: '/commanding', icon: <ClipboardOutlineIcon /> },
+      { title: 'Telemetry', path: '/telemetry', icon: <ClipboardOutlineIcon /> },
+      { title: 'Payload data delivery', path: '/data-delivery', icon: <ViewGridOutlineIcon /> },
+      { title: 'Orbit prediction', path: '/orbit-prediction', icon: <SatelliteIcon /> },
     ]
   },
   {

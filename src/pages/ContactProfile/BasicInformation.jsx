@@ -87,14 +87,16 @@ const BasicInformation = ({ onBasicInformationChange }) => {
       <Input label="Location" value={locationValue} setValue={setLocationValue} />
       <Input label="Name" value={nameValue} setValue={setNameValue} />
       <Input
-        label="Minimum viable Contact duration"
+        label="Minimum viable Contact duration (600 seconds or more)"
         value={minContactDurationValue}
         setValue={setMinContactDurationValue}
+        placeholder={"Minimum contact period for communication with spacecraft"}
       />
       <Input
-        label="Minimum elevation in degrees"
+        label="Minimum elevation in degrees (Between 0 degrees and 90 degrees)"
         value={minElevationDegreesValue}
         setValue={setMinElevationDegreesValue}
+        placeholder={"Defines the minimum altitude of contact after acquisition of signal (AOS)"}
       />
       <SelectBox
         label="Auto Tracking Frequency Band"
