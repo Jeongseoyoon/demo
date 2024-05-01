@@ -18,50 +18,53 @@ const RegisteredSpaceCraft = () => {
 
   const getSpaceCraft = async () => {
     // 위성 리스트 데이터 호출
-    const res = await axios.get('/api/link/page/1');
+    const res = await axios.get('/api/link/listAll');
     const data = res.data;
-    console.log('data', data);
-    const spacecraftList = data.linkList.map((item) => {
+    const spacecraftList = data.map((item) => {
       return {
         ...item,
         name: item.spacecraftDto ? item.spacecraftDto.name : null,
         noradId: item.spacecraftDto ? item.spacecraftDto.noradId : null,
         titleLine: item.spacecraftDto ? item.spacecraftDto.tleTitle : null,
         registeredAt: item.spacecraftDto ? item.spacecraftDto.createdDate : null,
-        direction: item.spacecraftDto ? item.linkDirection : null,
+        direction: item.spacecraftDto ? item.linkDirection : null
       };
     });
-    console.log('data.linkList', data.linkList);
     setSpaceCraftData(spacecraftList);
   };
 
-  async function onClickDetail (data) {
+  async function onClickDetail(data) {
     const res = await axios.get(`/api/link/${data.id}`);
-    const resData = res.data
-    console.log('rere',resData);
-    const directionKeys = Object.keys(resData.linkDirection);
-    const directionId = directionKeys.map(key => parseInt(key)); 
-    const polarizationKeys = Object.keys(resData.polarization);
-    const polarizationId = polarizationKeys.map(key => parseInt(key)); 
-    const polarizationValueKeys = Object.keys(resData.polarization);
-    const polarizationValue = polarizationValueKeys.map(key => resData.polarization[key]);
-    console.log('directionId',polarizationValue);
+    const resData = res.data;
+    console.log('rere', resData);
+    let newDirectionId = '';
+    let newDirectionValue = '';
+    for (const key in resData.linkDirection) {
+      newDirectionId = parseInt(key);
+      newDirectionValue = resData.linkDirection[key];
+    }
+    let newPolarizationId = '';
+    let newPolarizationValue = '';
+    for (const key in resData.polarization) {
+      newPolarizationId = parseInt(key);
+      newPolarizationValue = resData.polarization[key];
+    }
     const temp = {
       name: data.name,
       noradId: data.noradId,
       titleLine: data.spacecraftDto.tleTitle,
       tleFirst: data.spacecraftDto.tleFirst,
       tleSecond: data.spacecraftDto.tleSecond,
-      direction: data.linkDirection,
+      directionId: newDirectionId,
+      direction: newDirectionValue,
       frequency: data.centerFrequency,
       bandwidth: data.bandwidth,
-      directionId: directionId,
-      polarizationId: polarizationId,
-      polarization: polarizationValue,
-      id:data.id,
-      isFirst:true,
+      polarizationId: newPolarizationId,
+      polarization: newPolarizationValue,
+      id: data.id,
+      isFirst: true
     };
-    console.log('temp',temp);
+    console.log('temp', temp);
     setModalData(temp);
   }
 

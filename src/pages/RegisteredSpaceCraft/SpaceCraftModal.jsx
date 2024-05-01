@@ -1,9 +1,8 @@
-import { XOutlineIcon } from '../../assets/svgs';
+import { NewspaperIcon, XOutlineIcon } from '../../assets/svgs';
 import axios from 'axios';
 import { Button, Input, Modal, SelectBox, Text } from '../../components';
 import { registeredModalList } from '../../utils';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const DUMMY_DIRECTION_LIST = [
   { id: 1, text: 'Uplink' },
@@ -15,7 +14,7 @@ const DUMMY_POLARIZE_LIST = [
   { id: 3, text: 'BOTH' }
 ];
 //1.저장하고, 새로고침한다
-//2. 상세불러오기 API따로 만들어서 save 하고 나서 다시 조회리스트 호출 
+//2. 상세불러오기 API따로 만들어서 save 하고 나서 다시 조회리스트 호출
 const SpaceCraftModalListElement = ({ title, value }) => {
   return (
     <li className="border-primary rounded-lg border px-3 py-2">
@@ -25,16 +24,6 @@ const SpaceCraftModalListElement = ({ title, value }) => {
   );
 };
 
-const SpaceCraftModalEditElement = ({ title, value }) => {
-  return (
-    <li className="border-primary rounded-lg border px-3 py-2">
-      <Text weight="medium" size="body2" color="tertiary" text={title} />
-      <Text weight="medium" size="body2" color="primary" text={value} />
-      <Input label="Name" />
-      <Input label="City" />
-    </li>
-  );
-};
 const SpaceCraftModal = ({ data, setData }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [direction, setDirectionValue] = useState('');
@@ -43,23 +32,18 @@ const SpaceCraftModal = ({ data, setData }) => {
   const [centerFreqValue, setCenterFreqValue] = useState('');
   const [polarizeValue, setPolarizeValue] = useState('');
   const [polarizeId, setPolarizeId] = useState('');
-  const navigate = useNavigate(); 
 
   useEffect(() => {
     if (data) {
       // 데이터가 처음으로 로드될 때 초기화
       setDirectionValue(data.direction);
-      setDirectionId(data.directionId[0]);        
+      setDirectionId(data.directionId);
       setPolarizeValue(data.polarization);
       setBandwidthValue(data.bandwidth);
       setCenterFreqValue(data.frequency);
-      setPolarizeId(data.polarizationId[0]);
-      setIsEdit(false);
-      console.log('dbwm',data);
+      setPolarizeId(data.polarizationId);
     }
   }, [data]);
-
-
 
   const onClickListValueCallback = (e, item) => {
     setDirectionId(item.id);
@@ -69,20 +53,42 @@ const SpaceCraftModal = ({ data, setData }) => {
     setIsEdit(true);
   };
   const onSave = async (e) => {
-
     const updatedData = {
       linkDirection: directionId,
       centerFrequency: centerFreqValue,
       bandwidth: bandwidthValue,
-      polarization: polarizeId,
+      polarization: polarizeId
     };
-    console.log('data',data);
-    console.log('dataupdatedData',updatedData);
     const spacecraftRes = await axios.patch(`/api/link/${data.id}`, updatedData);
-    console.log('spacecraftRes',spacecraftRes);
-    setIsEdit(false);
-    navigate('/registered-spacecraft');
+    console.log('spacecraftRes', spacecraftRes);
+    const newSpacecraft = await axios.get(`/api/link/${data.id}`);
+    console.log('newSpacecraft', newSpacecraft);
+    const newSpacecraftData = newSpacecraft.data;
+    let newDirectionId = '';
+    let newDirectionValue = '';
+    for (const key in newSpacecraftData.linkDirection) {
+      newDirectionId = parseInt(key);
+      newDirectionValue = newSpacecraftData.linkDirection[key];
+    }
 
+    let newPolarizationId = '';
+    let newPolarizationValue = '';
+    for (const key in newSpacecraftData.polarization) {
+      newPolarizationId = parseInt(key);
+      newPolarizationValue = newSpacecraftData.polarization[key];
+    }
+
+    const temp = {
+      ...data,
+      direction: newDirectionValue,
+      directionId: newDirectionId,
+      frequency: newSpacecraftData.centerFrequency,
+      bandwidth: newSpacecraftData.bandwidth,
+      polarization: newPolarizationValue,
+      polarizationId: newPolarizationId
+    };
+    setData(temp);
+    setIsEdit(false);
   };
 
   const onDelete = async (e) => {
@@ -109,7 +115,7 @@ const SpaceCraftModal = ({ data, setData }) => {
           <div className="flex flex-row items-center justify-between p-4">
             <Text size="body1" weight="semibold" text={data.name} />
             <button type="button" className="flex h-8 w-8 items-center justify-center" onClick={() => setData(null)}>
-              <XOutlineIcon className="h-4 w-4" onClick={handleGoBack}/>
+              <XOutlineIcon className="h-4 w-4" onClick={handleGoBack} />
             </button>
           </div>
           <ul className="flex max-h-[60vh] flex-col gap-4 overflow-auto px-4 pb-4">
@@ -140,10 +146,15 @@ const SpaceCraftModal = ({ data, setData }) => {
               />
             </li>
             <li className="border-primary rounded-lg border px-3 py-2">
-              <Input label="Center frequency (MHz)" value={centerFreqValue} setValue={setCenterFreqValue} name="centerFrequency"/>
+              <Input
+                label="Center frequency (MHz)"
+                value={centerFreqValue}
+                setValue={setCenterFreqValue}
+                name="centerFrequency"
+              />
             </li>
             <li className="border-primary rounded-lg border px-3 py-2">
-              <Input label="Bandwidth (MHz)" value={bandwidthValue} setValue={setBandwidthValue} name="polarization"/>
+              <Input label="Bandwidth (MHz)" value={bandwidthValue} setValue={setBandwidthValue} name="polarization" />
             </li>
             <li className="border-primary rounded-lg border px-3 py-2">
               <SelectBox
@@ -162,12 +173,12 @@ const SpaceCraftModal = ({ data, setData }) => {
         </div>
       )}
       {/* View */}
-      {!isEdit && data &&  (
+      {!isEdit && data && (
         <div className="h-fit w-[560px] rounded-2xl bg-white shadow-primary">
           <div className="flex flex-row items-center justify-between p-4">
             <Text size="body1" weight="semibold" text={data.name} />
             <button type="button" className="flex h-8 w-8 items-center justify-center" onClick={() => setData(null)}>
-              <XOutlineIcon className="h-4 w-4" onClick={handleGoBack}/>
+              <XOutlineIcon className="h-4 w-4" onClick={handleGoBack} />
             </button>
           </div>
           <ul className="flex max-h-[60vh] flex-col gap-4 overflow-auto px-4 pb-4">

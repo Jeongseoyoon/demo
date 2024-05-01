@@ -29,10 +29,10 @@ const ContactProfileModal = ({ data, setData }) => {
   useEffect(() => {
     if (data) {
       setMinContactDurationValue(data.minContactDuration);
-      setminElevationDegreesValue(data.minElevationDegrees);        
+      setminElevationDegreesValue(data.minElevationDegrees);
       setAutoTrackingFrequencyBandValue(data.autoTrackingFrequencyBand);
-      setAutoTrackingFrequencyBandId(data.autoTrackingFrequencyBandId[0]);
-      console.log('dbwm',data);
+      setAutoTrackingFrequencyBandId(data.autoTrackingFrequencyBandId);
+      console.log('dbwm', data);
     }
   }, [data]);
 
@@ -46,28 +46,44 @@ const ContactProfileModal = ({ data, setData }) => {
   };
 
   const onSave = async (e) => {
-
     const updatedData = {
       name: data.name,
       minContactDuration: minContactDurationValue,
       minElevationDegrees: minElevationDegreesValue,
-      autoTrackingFrequencyBand: autoTrackingFrequencyBandId,
+      autoTrackingFrequencyBand: autoTrackingFrequencyBandId
     };
-    console.log('data',data);
-    console.log('dataupdatedData',updatedData);
+    console.log('dataupdatedData', updatedData);
     const res = await axios.patch(`/api/contactprofile/${data.id}`, updatedData);
-    console.log('res',res);
+    const contactprofile = await axios.get(`/api/contactprofile/${data.id}`);
+    const newContactprofile = contactprofile.data;
+    console.log('newContactprofile', newContactprofile);
+    let newAutoTrackingFrequencyBandId = '';
+    let newAutoTrackingFrequencyBand = '';
+    for (const key in newContactprofile.autoTrackingFrequencyBand) {
+      newAutoTrackingFrequencyBandId = parseInt(key);
+      newAutoTrackingFrequencyBand = newContactprofile.autoTrackingFrequencyBand[key];
+    }
+
+    const temp = {
+      ...data,
+      minContactDuration: newContactprofile.minContactDuration,
+      minElevationDegrees: newContactprofile.minElevationDegrees,
+      autoTrackingFrequencyBand: newAutoTrackingFrequencyBand,
+      autoTrackingFrequencyBandId: newAutoTrackingFrequencyBandId
+    };
+    setData(temp);
+    console.log('tetetete', temp);
     setIsEdit(false);
   };
 
   const onDelete = async (e) => {
-    // 데이터 삭제 요청 
+    // 데이터 삭제 요청
     try {
       await axios.delete(`/api/contactprofile/${data.id}`);
       window.location.href = '/registered-contact-profile';
     } catch (error) {
       console.error('error:', error);
-      // 오류 처리 
+      // 오류 처리
     }
   };
 
@@ -92,13 +108,23 @@ const ContactProfileModal = ({ data, setData }) => {
               <Text weight="medium" size="body2" color="primary" text={data['location']} />
             </li>
             <li className="border-primary rounded-lg border px-3 py-2">
-              <Input label="Minimum viable Contact duration" value={minContactDurationValue} setValue={setMinContactDurationValue} name="minContactDuration" />
+              <Input
+                label="Minimum viable Contact duration"
+                value={minContactDurationValue}
+                setValue={setMinContactDurationValue}
+                name="minContactDuration"
+              />
             </li>
             <li className="border-primary rounded-lg border px-3 py-2">
-              <Input label="Minimum elevation in degrees" value={minElevationDegreesValue} setValue={setminElevationDegreesValue} name="minContactDuration" />
+              <Input
+                label="Minimum elevation in degrees"
+                value={minElevationDegreesValue}
+                setValue={setminElevationDegreesValue}
+                name="minContactDuration"
+              />
             </li>
             <li className="border-primary rounded-lg border px-3 py-2">
-            <SelectBox
+              <SelectBox
                 label="Auto Tracking Frequency Band"
                 list={AUTOTRACKINGBAND_LIST}
                 value={autoTrackingFrequencyBandValue}

@@ -19,7 +19,7 @@ const ManageGroundStation = () => {
 
   const navigate = useNavigate();
   const tabIndex = manageTabs.findIndex((tab) => tab.path === '/manage-ground-station');
-  
+
   function onClickTab(index) {
     navigate(manageTabs[index].path);
   }
@@ -63,8 +63,10 @@ const ManageGroundStation = () => {
       latitudeDegrees: data.latitudeDegrees,
       longitudeDegrees: data.longitudeDegrees,
       providerName: data.providerName,
-      status: data.status,
+      status: data.status
     };
+    console.log('datasss', data);
+    console.log('temptemp', temp);
     setModalEditData(temp);
   }
 

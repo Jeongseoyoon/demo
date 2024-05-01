@@ -6,6 +6,7 @@ import ReviewArea from './ReviewArea';
 import { DescriptionBar, InfoMessage, MenuTab } from '../../components';
 import { InformationCircleOutlineIcon } from '../../assets/svgs';
 import Alert from '../../components/Alert';
+import { useNavigate } from 'react-router-dom';
 
 const MENU_INDEX = {
   BASIC_INFO: 0,
@@ -20,6 +21,7 @@ const ContactProfile = () => {
   const [messageArrayCount, setMessageArrayCount] = useState(0);
   const [isOpened, setIsOpened] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
+  const navigate = useNavigate();
 
   function onClickTab(index) {
     setSelectedMenuIndex(index);
@@ -36,10 +38,10 @@ const ContactProfile = () => {
   // 다음, 생성 버튼
   const onClickNextButton = async () => {
     if (selectedMenuIndex !== MENU_INDEX.REVIEW) {
-      if(selectedMenuIndex === MENU_INDEX.BASIC_INFO){
+      if (selectedMenuIndex === MENU_INDEX.BASIC_INFO) {
         // 교신 프로필 정보 유효성검사
         let validFlag = true;
-        if(basicInformationData){
+        if (basicInformationData) {
           console.log(basicInformationData);
           const keyNameObj = {
             groundStationName: 'Ground Station',
@@ -47,9 +49,9 @@ const ContactProfile = () => {
             name: 'Name',
             minContactDuration: 'Minimum viable Contact duration',
             minElevationDegrees: 'Minimum elevation in degrees',
-            autoTrackingFrequencyBand: 'Auto Tracking Frequency Band',
+            autoTrackingFrequencyBand: 'Auto Tracking Frequency Band'
           };
-          let keyName ='';
+          let keyName = '';
           for (const key in basicInformationData) {
             if (!basicInformationData[key]) {
               if (keyNameObj[key]) {
@@ -94,6 +96,7 @@ const ContactProfile = () => {
       );
       console.log('contactprofileRes', contactprofileRes);
     }
+    navigate('/registered-contact-profile');
   };
 
   const onClickClose = () => {
@@ -129,8 +132,8 @@ const ContactProfile = () => {
           />
         </div>
       </div>
-       {/* alert */}
-       <Alert isOpened={isOpened} onClickClose={onClickClose} message={alertMessage} />
+      {/* alert */}
+      <Alert isOpened={isOpened} onClickClose={onClickClose} message={alertMessage} />
       <InfoMessage messageArray={messageArray} onClickDelete={onClickDeleteButton} />
     </>
   );

@@ -20,7 +20,7 @@ const EditGroundStationModal = ({ data, setData }) => {
   const [statusValueId, setStatusValueId] = useState('');
 
   useEffect(() => {
-    if(data){
+    if (data) {
       setNameValue(data.name);
       setCityValue(data.city);
       setLatitudeValue(data.latitudeDegrees);
@@ -28,7 +28,8 @@ const EditGroundStationModal = ({ data, setData }) => {
       setAltitudeValue(data.altitudeMeters);
       setProviderValue(data.providerName);
       setStatusValue(data.status);
-    };
+      setStatusValueId(data.statusValueId);
+    }
   }, [data]);
 
   const onClickListValueCallback = (e, item) => {
@@ -44,9 +45,10 @@ const EditGroundStationModal = ({ data, setData }) => {
         latitudeDegrees: latitudeValue,
         longitudeDegrees: longitudeValue,
         providerName: providerValue,
-        status: statusValueId
+        status: statusValue
       };
-      const res = await axios.patch(`/api/groundstation/${data.id}`,updatedData);
+      console.log('업데이트', updatedData);
+      const res = await axios.patch(`/api/groundstation/${data.id}`, updatedData);
       console.log('res', res);
       window.location.href = '/manage-ground-station';
     } catch (error) {
@@ -59,12 +61,12 @@ const EditGroundStationModal = ({ data, setData }) => {
       {data && (
         <div className="h-fit w-[560px] rounded-2xl bg-white shadow-primary">
           <div className="flex flex-row items-center justify-between p-4">
-            <Text size="body1" weight="semibold" text={data.name}/>
+            <Text size="body1" weight="semibold" text={data.name} />
             <button type="button" className="flex h-8 w-8 items-center justify-center" onClick={() => setData(null)}>
               <XOutlineIcon className="h-4 w-4" />
             </button>
           </div>
-          <ul className="flex max-h-[60vh] overflow-auto flex-col gap-3 px-4 pb-4">
+          <ul className="flex max-h-[60vh] flex-col gap-3 overflow-auto px-4 pb-4">
             <li className="border-primary flex flex-col gap-2 rounded-lg border px-3 py-2">
               <Input label="Name" value={nameValue} setValue={setNameValue} />
             </li>
@@ -84,14 +86,7 @@ const EditGroundStationModal = ({ data, setData }) => {
               <Input label="Provider" value={providerValue} setValue={setProviderValue} />
             </li>
             <li className="border-primary flex flex-col gap-2 rounded-lg border px-3 py-2">
-            <SelectBox
-                label="Status"
-                list={STATUS_LIST}
-                value={statusValue}
-                setValue={setStatusValue}
-                name="autoTrackingFrequencyBand"
-                onClickListValueCallback={onClickListValueCallback}
-              />
+              <Input label="Status" value={statusValue} setValue={setStatusValue} />
             </li>
           </ul>
           <div className="flex w-full flex-row items-center justify-end bg-bg-transparent_gray_light p-4">

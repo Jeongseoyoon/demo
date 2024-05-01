@@ -25,7 +25,7 @@ const BasicInformation = ({ onBasicInformationChange }) => {
     // API를 호출하여 지상국 목록 가져오기
     const fetchGroundStationId = async () => {
       try {
-        const res = await axios.get('/api/groundstation/page/1');
+        const res = await axios.get('/api/groundstation/listAll');
         const groundStationData = res.data['groundStationList'];
         const selectList = groundStationData.map((m) => {
           return { id: m.id, text: m.city };
@@ -90,13 +90,13 @@ const BasicInformation = ({ onBasicInformationChange }) => {
         label="Minimum viable Contact duration (600 seconds or more)"
         value={minContactDurationValue}
         setValue={setMinContactDurationValue}
-        placeholder={"Minimum contact period for communication with spacecraft"}
+        placeholder={'Minimum contact period for communication with spacecraft'}
       />
       <Input
         label="Minimum elevation in degrees (Between 0 degrees and 90 degrees)"
         value={minElevationDegreesValue}
         setValue={setMinElevationDegreesValue}
-        placeholder={"Defines the minimum altitude of contact after acquisition of signal (AOS)"}
+        placeholder={'Defines the minimum altitude of contact after acquisition of signal (AOS)'}
       />
       <SelectBox
         label="Auto Tracking Frequency Band"

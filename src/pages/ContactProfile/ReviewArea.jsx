@@ -1,22 +1,21 @@
 import ReviewAreaElement from './ReviewAreaElement';
 
 const ReviewArea = ({ basicInformationData }) => {
-  console.log('받은값', basicInformationData);
   const reviewDataArray = [
-    { name: 'Ground Station', value: basicInformationData ? basicInformationData.groundStationName : '' },
-    { name: 'Location', value: basicInformationData ? basicInformationData.locationName : '' },
-    { name: 'Name', value: basicInformationData ? basicInformationData.name : '' },
+    { name: 'Ground Station', value: basicInformationData?.groundStationName },
+    { name: 'Location', value: basicInformationData?.locationName },
+    { name: 'Name', value: basicInformationData?.name },
     {
       name: 'Minimum viable Contact duration',
-      value: basicInformationData ? basicInformationData.minContactDuration : ''
+      value: basicInformationData?.minContactDuration
     },
     {
       name: 'Minimum elevation in degrees',
-      value: basicInformationData ? basicInformationData.minElevationDegrees : ''
+      value: basicInformationData?.minElevationDegrees
     },
     {
       name: 'Auto Tracking Frequency Band',
-      value: basicInformationData ? basicInformationData.autoTrackingFrequencyBandName : ''
+      value: basicInformationData?.autoTrackingFrequencyBandName
     }
   ];
 

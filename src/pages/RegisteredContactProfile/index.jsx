@@ -18,41 +18,45 @@ const RegisteredContactProfile = () => {
 
   const getContactProfile = async () => {
     // 교신프로필 데이터 호출
-    const res = await axios.get('/api/contactprofile/page/1');
+    const res = await axios.get('/api/contactprofile/listAll');
     const data = res.data;
-    console.log('data',data);
-    const contactProfileList = data.contactProfileList.map(item => {
+    const contactProfileList = data.map((item) => {
       return {
         ...item,
         name: item.groundStationDto ? item.groundStationDto.name : null,
         city: item.groundStationDto ? item.groundStationDto.city : null,
-        latitudeDegrees: item.groundStationDto ? item.groundStationDto.latitudeDegrees: null,
+        latitudeDegrees: item.groundStationDto ? item.groundStationDto.latitudeDegrees : null,
         longitudeDegrees: item.groundStationDto ? item.groundStationDto.longitudeDegrees : null,
         minContactDuration: item.groundStationDto ? item.minContactDuration : null,
         minElevationDegrees: item.groundStationDto ? item.minElevationDegrees : null,
-        registeredAt: item.groundStationDto ? item.createdDate : null,
+        registeredAt: item.groundStationDto ? item.createdDate : null
       };
     });
-    console.log('data.data.contactProfileList',data.contactProfileList);
+    console.log('data.data.contactProfileList', data.contactProfileList);
     setContactProfileData(contactProfileList);
   };
   async function onClickDetail(data) {
     const res = await axios.get(`/api/contactprofile/${data.id}`);
-    const resData = res.data
-    const autoTrackingFrequencyBandKeys = Object.keys(resData.autoTrackingFrequencyBand);
-    const autoTrackingFrequencyBandId = autoTrackingFrequencyBandKeys.map(key => parseInt(key)); 
-    console.log('werwere',res);
+    const resData = res.data;
+    let newAutoTrackingFrequencyBandId = '';
+    let newAutoTrackingFrequencyBand = '';
+    for (const key in resData.autoTrackingFrequencyBand) {
+      newAutoTrackingFrequencyBandId = parseInt(key);
+      newAutoTrackingFrequencyBand = resData.autoTrackingFrequencyBand[key];
+    }
+
+    console.log('werwere', res);
     const location = data.latitudeDegrees + ',' + data.longitudeDegrees;
     const temp = {
       name: data.name,
-      id:data.id,
-      city:data.groundStationDto.city,
+      id: data.id,
+      city: data.groundStationDto.city,
       minContactDuration: data.minContactDuration,
       minElevationDegrees: data.minElevationDegrees,
-      autoTrackingFrequencyBand: data.autoTrackingFrequencyBand,
-      autoTrackingFrequencyBandId: autoTrackingFrequencyBandId,
+      autoTrackingFrequencyBand: newAutoTrackingFrequencyBand,
+      autoTrackingFrequencyBandId: newAutoTrackingFrequencyBandId,
       createdDate: data.groundStationDto.createdDate,
-      location:location
+      location: location
     };
     setModalData(temp);
   }
@@ -60,7 +64,10 @@ const RegisteredContactProfile = () => {
   return (
     <>
       <div className="flex h-full w-full flex-col">
-        <DescriptionBar title="Registered Contact Profile" description="Check and access to the registered Contact Profile" />
+        <DescriptionBar
+          title="Registered Contact Profile"
+          description="Check and access to the registered Contact Profile"
+        />
         <div className="p-4">
           <SearchBar className="w-60" value={searchValue} setValue={setSearchValue} placeholder="Search" />
         </div>
